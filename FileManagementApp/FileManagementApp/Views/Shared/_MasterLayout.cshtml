@@ -1,0 +1,182 @@
+﻿@inject SignInManager<ApplicationUser> signInManager;
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>@ViewBag.Title</title>
+    <!-- plugins:css -->
+    <link rel="stylesheet" href="~/superadmin/vendors/mdi/css/materialdesignicons.min.css">
+    <link rel="stylesheet" href="~/superadmin/vendors/css/vendor.bundle.base.css">
+    <link rel="stylesheet" href="~/superadmin/css/style.css">
+    <link rel="shortcut icon" href="~/superadmin/images/favicon.ico" />
+
+    <link href="https://www.jqueryscript.net/css/jquerysctipttop.css" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w==" crossorigin="anonymous" />
+    @*<script src="https://code.jquery.com/jquery-1.12.4.min.js" integrity="sha384-nvAa0+6Qg9clwYCGGPpDQLVpLNn0fRaROjHqs13t4Ggj3Ez50XnGQqc/r8MhnRDZ" crossorigin="anonymous"></script>*@
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/dt-1.10.25/datatables.min.css" />
+    <script src="https://code.jquery.com/jquery-1.12.4.min.js" integrity="sha384-nvAa0+6Qg9clwYCGGPpDQLVpLNn0fRaROjHqs13t4Ggj3Ez50XnGQqc/r8MhnRDZ" crossorigin="anonymous"></script>
+    @*<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>*@
+
+    <script type="text/javascript" src="http://www.google.com/jsapi"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-ajaxy/1.6.1/scripts/jquery.ajaxy.min.js" integrity="sha512-bztGAvCE/3+a1Oh0gUro7BHukf6v7zpzrAb3ReWAVrt+bVNNphcl2tDTKCBr5zk7iEDmQ2Bv401fX3jeVXGIcA==" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-ajaxy/1.6.1/scripts/jquery.ajaxy.js" integrity="sha512-4WpSQe8XU6Djt8IPJMGD9Xx9KuYsVCEeitZfMhPi8xdYlVA5hzRitm0Nt1g2AZFS136s29Nq4E4NVvouVAVrBw==" crossorigin="anonymous"></script>
+
+</head>
+<body>
+    <div class="container-scroller">
+        <!-- partial:../../partials/_navbar.html -->
+        <nav class="navbar default-layout-navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
+            <div class="text-center navbar-brand-wrapper d-flex align-items-center justify-content-center">
+                <a class="navbar-brand brand-logo" href="~/SuperAdmin/Index"><img src="" alt="Smart File" /></a>
+                <a class="navbar-brand brand-logo-mini" href="~/SuperAdmin/Index"><img src="" alt="SF" /></a>
+            </div>
+            <div class="navbar-menu-wrapper d-flex align-items-stretch">
+                <button class="navbar-toggler navbar-toggler align-self-center" type="button" data-toggle="minimize">
+                    <span class="mdi mdi-menu"></span>
+                </button>
+                <div class="search-field d-none d-md-block">
+                    <form class="d-flex align-items-center h-100" action="#">
+                        <div class="input-group">
+                            <div class="input-group-prepend bg-transparent">
+                                <i class="input-group-text border-0 mdi mdi-magnify"></i>
+                            </div>
+                            <input type="text" class="form-control bg-transparent border-0" placeholder="Search projects">
+                        </div>
+                    </form>
+                </div>
+                <ul class="navbar-nav navbar-nav-right">
+                    <li class="nav-item nav-logout d-none d-lg-block">
+                        <a class="nav-link" href="~/Account/Logout">
+                            <i class="mdi mdi-power"></i>
+                        </a>
+                    </li>
+                    <li class="nav-item d-none d-lg-block full-screen-link">
+                        <a class="nav-link">
+                            <i class="mdi mdi-fullscreen" id="fullscreen-button"></i>
+                        </a>
+                    </li>
+                </ul>
+
+            </div>
+        </nav>
+        <!-- partial -->
+        <div class="container-fluid page-body-wrapper">
+            <!-- partial:../../partials/_sidebar.html -->
+            <nav class="sidebar sidebar-offcanvas" id="sidebar">
+                <ul class="nav">
+                    <li class="nav-item nav-profile">
+                        <a href="#" class="nav-link">
+
+                            <div class="nav-profile-text d-flex flex-column">
+                                <span class="font-weight-bold mb-2">Naresh Bhoyar</span>
+                                <span class="text-secondary text-small">Director</span>
+                            </div>
+                            <i class="mdi mdi-bookmark-check text-success nav-profile-badge"></i>
+                        </a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link" href="~/Home/Index">
+                            <span class="menu-title">Dashboard</span>
+                            <i class="fas fa-tachometer-alt menu-icon"></i>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="~/SubGroups/Index">
+                            <span class="menu-title">Manage Sub Groups</span>
+                            <i class="fas fa-layer-group menu-icon"></i>
+                        </a>
+                    </li>
+                    <li class="nav-item ">
+                        <a class="nav-link" href="~/Items/Index">
+                            <span class="menu-title">Manage Items</span>
+                            <i class="fas fa-sitemap menu-icon"></i>
+                        </a>
+                    </li>
+                    <li class="nav-item ">
+                        <a class="nav-link" href="~/PdfFiles/Index">
+                            <span class="menu-title">Manage Files</span>
+                            <i class="fas fa-file-import menu-icon"></i>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="~/ManageInventory/GetMainStock">
+                            <span class="menu-title">Manage Inventory</span>
+                            <i class="fa fa-users menu-icon"></i>
+                        </a>
+                    </li>
+
+                </ul>
+            </nav>
+            <!-- partial -->
+            <div class="main-panel">
+                <div class="content-wrapper">
+                    @if (TempData["msg"] != null)
+                    {
+                        <div class="alert alert-primary" role="alert">
+                            @TempData["msg"]
+                        </div>
+                    }
+                    <br />
+                    @RenderBody()
+                </div>
+                <!-- content-wrapper ends -->
+                <!-- partial:../../partials/_footer.html -->
+                <footer class="footer">
+                    <div class="container-fluid clearfix">
+                        <span class="text-muted d-block text-center text-sm-left d-sm-inline-block">Copyright © Naresh Bhoyar @DateTime.Now.Year</span>
+                    </div>
+                </footer>
+                <!-- partial -->
+            </div>
+            <!-- main-panel ends -->
+        </div>
+        <!-- page-body-wrapper ends -->
+    </div>
+   
+    <!-- container-scroller -->
+    <!-- plugins:js -->
+    @*<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.js"></script>
+        <script type="text/javascript" src="http://www.google.com/jsapi"></script>*@
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    @*<script src="~/lib/jquery/dist/jquery.min.js"></script>*@
+
+    <script src="~/superadmin/vendors/js/vendor.bundle.base.js"></script>
+    <!-- endinject -->
+    <!-- Plugin js for this page -->    
+    <!-- End plugin js for this page -->
+    <!-- inject:js -->
+    <script src="~/superadmin/js/off-canvas.js"></script>
+    <script src="~/superadmin/js/hoverable-collapse.js"></script>
+    <script src="~/superadmin/js/misc.js"></script>
+    <!-- endinject -->
+    <!-- Custom js for this page -->
+    <script src="~/superadmin/js/file-upload.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet" />
+    <script src="https://cdn.tiny.cloud/1/5dg4r2hfa5nfu7q0gs0h81npfrw2rjt2o31cvhheicfgmv5h/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.7.7/xlsx.full.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.7.7/xlsx.core.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xls/0.7.4-a/xls.core.min.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js" integrity="sha512-2ImtlRlf2VVmiGZsjm9bEyhjGW4dU7B6TNwh/hx/iSByxNENtj3WVE6o/9Lj4TJeVXPi4bnOIMXFIJJAeufa0A==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.js"></script>
+   
+    <!-- End custom js for this page -->
+    @await RenderSectionAsync("Scripts", required: false)
+    <script>
+        $(document).ready(function () {
+            // show the alert
+            $(".alert").first().hide().slideDown(500).delay(4000).slideUp(500, function () {
+                $(this).remove();
+            });
+        });
+
+    </script>
+</body>
+</html>

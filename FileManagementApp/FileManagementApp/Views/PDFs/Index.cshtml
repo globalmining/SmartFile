@@ -1,0 +1,73 @@
+﻿@model IEnumerable<FileManagementApp.Models.PDF>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Title)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Group)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.SubGroup)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Item)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PDFName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CreateON)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.UpdateON)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Title)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Group.GroupName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.SubGroup.SubGroupName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Item.ItemName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PDFName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CreateON)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.UpdateON)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.PDFID">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.PDFID">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.PDFID">Delete</a> |
+                <a class="btn btn-outline-primary" href="@("wwwroot/pdffolder/"+item.PDFName)">Read Now</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

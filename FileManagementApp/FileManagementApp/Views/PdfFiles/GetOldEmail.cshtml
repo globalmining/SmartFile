@@ -1,0 +1,59 @@
+﻿@model IEnumerable<FileManagementApp.Models.SentEmailList>
+@{ 
+    Layout = null;
+}
+<div class="table-responsive">
+    <h3>Old email list</h3>
+    <br />
+    <br />
+    <table class="table table-hover table-bordered" id="FileData">
+        <thead class="thead-dark" align="center">
+            <tr align="center">
+                <th>
+                    Email
+                </th>
+                <th>
+                    File Name
+                </th>
+                <th>
+                    Subject
+                </th>
+                <th>
+                    Body
+                </th>
+                <th>
+                    Sent Time
+                </th>
+                <th>
+                    Action
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Emailid)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Filename)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Subject)
+                    </td>
+                    <td>
+                        @Html.Raw(item.Body)    
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.SentDateTime)
+                    </td>
+                   
+                    <td>
+                        <a asp-action="SendAgain" asp-route-id="@item.Id" class="btn btn-inverse-info"><i class="fa fa-paper-plane"></i></a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

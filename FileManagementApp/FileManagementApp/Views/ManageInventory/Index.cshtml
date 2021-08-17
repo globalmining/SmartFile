@@ -1,0 +1,382 @@
+﻿@model FileManagementApp.Models.StockDetails
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_MasterLayout.cshtml";
+}@{
+    static string getFullName()
+    {
+        DateTime date = DateTime.Now;
+
+        return date.ToString("MMMM");
+    }
+}
+<div class="row">
+    @*<div class="col-md-6">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title" align="center">Select Stock Month</h4>
+                <form class="form-inline">
+                    <select id="Month" class="form-control col-lg-5 m-2" asp-items="ViewBag.Years"></select>
+
+                    <select id="Year" class="form-control col-lg-5  m-2" asp-items="ViewBag.Months"></select>
+
+                </form>
+
+            </div>
+        </div>
+    </div>*@
+    <br />
+    <br /><br />
+    &nbsp;&nbsp;
+    <div class="col-md-12 mt-md-4">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title" align="center">Add Stock By Month</h4>
+               
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<lable id="Currentdate">@DateTime.Now.Date.ToString()</lable>
+                <div class="container-fluid">
+                    @*<form class="form-inline" action=""method="post">*@
+                    <div class="form-inline">
+                        <input type="date" name="Date" id="Date" value="" class="form-control col-lg-2 m-2" pattern="" onchange="GetStockDetails()" />
+                        <select asp-for="@Model.GroupName" class="form-control col-lg-2 m-2" asp-items="ViewBag.GroupID"></select>
+
+                        <select asp-for="@Model.ItemID" class="form-control col-lg-2  m-2" asp-items="ViewBag.ItemID"></select>
+
+                        <input type="text" class="form-control col-lg-2 m-2" asp-for="@Model.Unit" placeholder="Enter Unit" required>
+
+                        <input type="number" class="form-control col-lg-2 m-2" asp-for="@Model.LastBalQty" placeholder="Last Balance Qty" required>
+                        <input type="number" class="form-control col-lg-2 m-2" asp-for="@Model.PurchaseQty" placeholder="Purchase Qty" required>
+
+                        <input type="number" class="form-control col-lg-2 m-2" asp-for="@Model.SaleQty" placeholder="Sale Qty" required>
+
+                        <input type="number" class="form-control col-lg-2 m-2" asp-for="@Model.StockQty" placeholder="Stock Qty" onblur="CulateAmount()" required>
+
+                        <input type="number" class="form-control col-lg-2 m-2" asp-for="@Model.Rate" placeholder="Rate" onblur="CulateAmount()" required>
+                        <input type="text" class="form-control col-lg-2 m-2" asp-for="Amount" placeholder="Total Amount" readonly>
+                        <button type="submit" class="btn btn-inverse-primary m-2" onclick="AddStockDetails()">Add New Stock</button>
+                    </div>
+                    @*</form>*@
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <br />
+    <br /><br />
+    &nbsp;&nbsp;
+    <div class="col-md-12 mt-md-4">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title" align="center">Stock List : </h4>
+                <button type="submit" class="btn btn-inverse-success col-lg-2 m-2 align-self-center" onclick="GetStockDetails()">Refresh</button>
+                <table class="table table-responsive" id="stock">
+                    <thead>
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Item Name</th>
+                            <th scope="col">Group Name</th>
+                            <th scope="col">Unit</th>
+                            <th scope="col">Last Balance Qty</th>
+                            <th scope="col">Purchase Qty</th>
+                            <th scope="col">Salse Qty</th>
+                            <th scope="col">Stock Qty</th>
+                            <th scope="col">Rate</th>
+                            <th scope="col">Amount</th>
+                            <th scope="col">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tbody">
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <br />
+    <br /><br />
+    &nbsp;&nbsp;
+    <div class="col-md-12 mt-md-4">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title" align="center">Add Monthely Stock : <lable id="Currentdate"></lable> </h4>
+                <button type="submit" class="btn btn-inverse-success col-lg-2 m-2 align-self-center" onclick="GetTotalAmount()">Get Amount</button>
+                <div class="container-fluid">
+                    @*<form class="">*@
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group row">
+                                <label class="col-sm-3 col-form-label">Stock Amount</label>
+                                <div class="col-sm-9">
+
+                                    <input type="number" class="form-control m-2" readonly id="StockAmt" onblur="CountDebetorTotal()" placeholder="Stock Amount">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group row">
+                                <label class="col-sm-3 col-form-label">Debetor Amount</label>
+                                <div class="col-sm-9">
+
+                                    <input type="number" class="form-control m-2" id="DebetorAmt" onblur="CountDebetorTotal()" placeholder="Debetor Amount">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group row">
+                                <label class="col-sm-3 col-form-label">Stock Debetor Total</label>
+                                <div class="col-sm-9">
+                                    <input type="number" class="form-control m-2" id="StockDebetorAmt" placeholder="Stock Debetor Total">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group row">
+                                <label class="col-sm-3 col-form-label">Creditor Amount</label>
+                                <div class="col-sm-9">
+                                    <input type="number" class="form-control m-2" id="CreditorAmt" onblur="CountCreditorTotalTotal()" placeholder="Creditor Amount">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group row">
+                                <label class="col-sm-3 col-form-label">Credit Total</label>
+                                <div class="col-sm-9">
+                                    <input type="number" class="form-control m-2" id="CreditTotal" placeholder="Credit Total">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group row">
+                                <label class="col-sm-3 col-form-label">Debit Bal 70%</label>
+                                <div class="col-sm-9">
+                                    <input type="number" class="form-control m-2" id="Db70" placeholder="Debit Bal 70%">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group row">
+                                <label class="col-sm-3 col-form-label">Bank Debit Amount</label>
+                                <div class="col-sm-9">
+                                    <input type="number" class="form-control m-2" id="BankDebitAmt" onblur="CountFinalAmt()" placeholder="Bank Debit Amount">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group row">
+                                <label class="col-sm-3 col-form-label">Excess By Rs.</label>
+                                <div class="col-sm-9">
+                                    <input type="number" class="form-control m-2" id="ExcessDb" placeholder="Excess Db">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-inverse-success col-lg-2 m-2 align-self-center" onclick="AddStockMains()">Add</button>
+                    @*</form>*@
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+        GetStockDetails();
+    });
+    function CulateAmount() {
+        var Qty = $("#StockQty").val();
+        var Rate = $("#Rate").val();
+        if (Qty != null && Rate != null) {
+            $("#Amount").val(Qty * Rate);
+        }
+    }
+    var TotalAmount;
+    function AddStockDetails() {
+        var Date = $("#Date").val();
+        UpdateCurrentDate(Date);
+        var modal = {
+            "GroupName": $("#GroupName option:selected").text(),
+            "ItemName": $("#ItemID option:selected").text(),
+            "Unit": $("#Unit").val(),
+            "LastBalQty": $("#LastBalQty").val(),
+            "PurchaseQty": $("#PurchaseQty").val(),
+            "SaleQty": $("#SaleQty").val(),
+            "StockQty": $("#StockQty").val(),
+            "Rate": $("#Rate").val(),
+        }
+        $.ajax({
+            type: "POST",
+            url: "/ManageInventory/AddStockDetails",
+            //data: { "id": GroupName },
+            data: { "data": modal, "Date": Date },
+
+            dataType: "json",
+            success: function (data) {
+                debugger
+                alert("Success!");
+                GetStockDetails();
+                CountDebetorTotal();
+            },
+            error: function () {
+                alert("Failed.");
+            }
+        });
+    }
+    function GetStockDetailsById(id) {
+        $.ajax({
+            type: "GET",
+            url: "/ManageInventory/GetStockDetailsById",
+            data: { "id": id },
+            datatype: "html",
+            success: function (data) {
+                console.log(data);
+                    $("#GroupName option:selected").text(data.groupName),
+                    $("#ItemID option:selected").text(data.itemName),
+                    $("#Unit").val(data.unit),
+                    $("#LastBalQty").val(data.lastBalQty),
+                    $("#PurchaseQty").val(data.purchaseQty),
+                    $("#SaleQty").val(data.saleQty),
+                    $("#StockQty").val(data.stockQty),
+                    $("#Rate").val(data.rate)
+            },
+            error: function () {
+                alert("Failed to load data.");
+            }
+        });
+    }
+    function GetStockDetails() {
+        var Date = $("#Date").val();
+        UpdateCurrentDate(Date);
+        $.ajax({
+            type: "GET",
+            url: "/ManageInventory/GetStockDetails",
+            data: { "Date": Date },
+            contentType: "application/json; charset=utf-8",
+            datatype: "html",
+            success: function (data) {
+                var html = '';
+                console.log(data);
+                $.each(data, function (key, item) {
+                    html += '<tr align="center">';
+                    html += '<td>' + item.stockDetailID + '</td>';
+                    html += '<td>' + item.itemName + '</td>';
+                    html += '<td>' + item.groupName + '</td>';
+                    html += '<td>' + item.unit + '</td>';
+                    html += '<td>' + item.lastBalQty + '</td>';
+                    html += '<td>' + item.purchaseQty + '</td>';
+                    html += '<td>' + item.saleQty + '</td>';
+                    html += '<td>' + item.stockQty + '</td>';
+                    html += '<td>' + item.rate + '</td>';
+                    html += '<td id="amt">' + item.amount + '</td>';
+                    html += '<td><button onclick="return GetStockDetailsById(' + item.stockDetailID + ')" class="btn btn-info"><i class="fa fa-edit sm"></i></button></td>';
+                    html += '</tr>';
+                    GetStockMainList();
+                    GetTotalAmount();
+                });
+                $('#tbody').html("").html(html);
+            },
+            error: function () {
+                alert("Failed to load data.");
+            }
+        });
+    }
+    function GetTotalAmount() {
+        var Date = $("#Date").val();
+        UpdateCurrentDate(Date);
+        $.ajax({
+            type: "GET",
+            url: "/ManageInventory/GetTotalAmount",
+            datatype: "html",
+            data: { "Date": Date },
+            success: function (data) {
+                console.log(data);
+                $("#StockAmt").val(data);
+            },
+            error: function () {
+                alert("Failed to load data.");
+            }
+        });
+    }
+    function AddStockMains() {
+        var Date = $("#Date").val();
+        var modal = {
+            "StockAmt": $("#StockAmt").val(),
+            "DebtorAmt": $("#DebetorAmt").val(),
+            "StockDebtTot": $("#StockDebetorAmt").val(),
+            "CreditorAmt": $("#CreditorAmt").val(),
+            "CredTot": $("#CreditTotal").val(),
+            "DebitBal70": $("#Db70").val(),
+            "BankDebitAmt": $("#BankDebitAmt").val(),
+            "ExcessDB": $("#ExcessDb").val(),
+        }
+        console.log(modal);
+        $.ajax({
+            type: "POST",
+            url: "/ManageInventory/AddStockMains",
+            //data: { "id": GroupName },
+            data: { "main": modal, "Date": Date },
+            dataType: "json",
+            success: function (data) {
+                debugger
+                alert("Success!");
+                GetStockMainList();
+            },
+            error: function () {
+                alert("Failed.");
+            }
+        });
+    }
+    function GetStockMainList() {
+        var Date = $("#Date").val();
+        UpdateCurrentDate(Date);
+        $.ajax({
+            type: "GET",
+            url: "/ManageInventory/GetStockMainsByMonth",
+            data: { "Date": Date },
+            datatype: "html",
+            success: function (data) {
+                    $("#StockAmt").val(data.stockAmt),
+                    $("#DebetorAmt").val(data.debtorAmt)
+                    $("#StockDebetorAmt").val(data.stockDebtTot),
+                    $("#CreditorAmt").val(data.creditorAmt),
+                    $("#CreditTotal").val(data.credTot),
+                    $("#Db70").val(data.debitBal70),
+                    $("#BankDebitAmt").val(data.bankDebitAmt),
+                    $("#ExcessDb").val(data.excessDB)
+            },
+            error: function () {
+                alert("Failed to load data.");
+            }
+        });
+    }
+    function UpdateCurrentDate(Date) {
+        $("#Currentdate").html("").append(Date);
+    }
+    function CountDebetorTotal() {
+        var StockAmount = parseFloat($("#StockAmt").val());
+        var DebetorAmt = parseFloat($("#DebetorAmt").val());
+        if (StockAmount != null && DebetorAmt != null) {
+            var Total = parseFloat(StockAmount + DebetorAmt).toFixed(2);
+            $("#StockDebetorAmt").val(Total);
+            CountCreditorTotalTotal()
+        }
+    }
+    function CountCreditorTotalTotal() {
+        var StockDebetorAmt = parseFloat($("#StockDebetorAmt").val());
+        var CreditorAmt = parseFloat($("#CreditorAmt").val());
+        if (StockDebetorAmt != null && CreditorAmt != null) {
+            $("#CreditTotal").val(StockDebetorAmt - CreditorAmt);
+            var CreditTotal = parseFloat($("#CreditTotal").val());
+            var Count70 = parseFloat((CreditTotal * 70) / 100).toFixed(2)
+            $("#Db70").val(Count70);
+            CountFinalAmt()
+        }
+    }
+    function CountFinalAmt() {
+        var Db70 = parseFloat($("#Db70").val());
+        var BankDebitAmt = parseFloat($("#BankDebitAmt").val());
+        if (Db70 != null && BankDebitAmt != null) {
+            var ExcessDb = parseFloat(Db70 - BankDebitAmt).toFixed(2);
+            $("#ExcessDb").val(ExcessDb);
+        }
+    }
+</script>

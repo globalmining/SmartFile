@@ -1,0 +1,61 @@
+﻿@model IEnumerable<FileManagementApp.Models.StockMain>
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_MasterLayout.cshtml";
+}
+<div class="row">
+    <div class="col-md-12 mt-md-4">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title" align="center">Stoks List</h4>
+                <a asp-action="Index" class="btn btn-inverse-success mr-2"><i class="fa fa-plus"></i> &nbsp;Add New Month Stock</a>
+                <br />
+                <br />
+                <table class="table table-responsive" id="Data">
+                    <thead>
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Month-Year</th>
+                            <th scope="col">Date</th>
+                            <th scope="col">Stock Amount</th>
+                            <th scope="col">Debetor Amonunt</th>
+                            <th scope="col">Stock Debetor Amount</th>
+                            <th scope="col">Creditor Amount</th>
+                            <th scope="col">Creditor Total</th>
+                            <th scope="col">Debitor Balance 70%</th>
+                            <th scope="col">Bank Debit Amont</th>
+                            <th scope="col">Excess Rs</th>
+                            <th scope="col">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tbody">
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>@item.StockMainID</td>
+                                <td>@item.MonthYear</td>
+                                <td>@item.Date.Date.ToString("dd/MM/yyyy")</td>
+                                <td>@item.StockAmt</td>
+                                <td>@item.DebtorAmt</td>
+                                <td>@item.StockDebtTot</td>
+                                <td>@item.CreditorAmt</td>
+                                <td>@item.CredTot</td>
+                                <td>@item.DebitBal70</td>
+                                <td>@item.BankDebitAmt</td>
+                                <td>@item.ExcessDB</td>
+                                <td><a asp-action="GetStockReport" asp-route-id="@item.StockMainID" class="btn btn-inverse-primary">Stock Details Report</a> | <a asp-action="GetStockMainsReport" asp-route-id="@item.StockMainID" class="btn btn-inverse-primary">Stock Main Report</a></td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+                
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+        $('#Data').DataTable();
+    });
+</script>

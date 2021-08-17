@@ -1,0 +1,69 @@
+﻿@model FileManagementApp.Models.ViewModels.PdfFileCreateVM
+
+@{
+    ViewData["Title"] = "Create";
+    Layout = "~/Views/Shared/_MasterLayout.cshtml";
+}
+
+<button type="button" class="btn btn-rounded btn-github btn-lg" onclick="OpenCamera()"><i class="fas fa-camera-retro"></i></button>
+<br />
+<br />
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-body">
+                <div class="table-responsive">
+                    <h3>Upload Files</h3>
+                    <form asp-action="Create" method="post" enctype="multipart/form-data">
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                        <div class="form-group">
+                            <label asp-for="PdfFileName" class="control-label">File Name</label>
+                            <input asp-for="PdfFileName" class="form-control" />
+                            <span asp-validation-for="PdfFileName" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="GroupID" class="control-label">Group</label>
+                            <select asp-for="GroupID" class="form-control" asp-items="ViewBag.GroupID"></select>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="SubGroupID" class="control-label">Sub Group</label>
+                            <select asp-for="SubGroupID" class="form-control" asp-items="ViewBag.SubGroupID"></select>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="ItemID" class="control-label">Item</label>
+                            <select asp-for="ItemID" class="form-control" asp-items="ViewBag.ItemID"></select>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="PdfFileStaticFolder" class="control-label">Upload File</label>
+                            <div class="custom-file">
+                                <input asp-for="PdfFileStaticFolder" class="custom-file-input" id="customFile" accept="image/*capture=camera" capture />
+                                <label class="custom-file-label" for="customFile">Select File To Save</label>
+                            </div>
+                            <span asp-validation-for="PdfFileStaticFolder" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <input type="submit" value="Create" class="btn btn-primary" />
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts {
+
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
+<script>
+    $(document).ready(function () {
+        debugger
+        $('.custom-file-input').on("change", function () {
+            var fileName = $(this).val().split("\\").pop();
+            $(this).next('.custom-file-label').html(fileName);
+        });
+    });
+
+</script>
+
+

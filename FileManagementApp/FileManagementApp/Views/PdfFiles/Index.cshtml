@@ -1,0 +1,206 @@
+﻿@model IEnumerable<FileManagementApp.Models.PdfFile>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_MasterLayout.cshtml";
+}
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-body">
+                <div class="table-responsive">
+                    <h3>My Files</h3>
+                    <a asp-action="Create" class="btn btn-inverse-success mr-2"><i class="fa fa-plus"></i> &nbsp;Add</a>
+                    <button type="button" class="btn btn-inverse-primary mr-2 pu" data-toggle="modal" data-target="#exampleModal">
+                        <i class="fa fa-plus"></i> &nbsp;Add new email
+                    </button>
+                    <button type="button" class="btn btn-inverse-info mr-2 pu" onclick="GetOldEmail()">
+                        <i class="fa fa-cog"></i> &nbsp;Old Email
+                    </button>
+                    <br />
+                    <br />
+                    <table class="table table-hover" id="FilePdfData">
+                        <thead class="thead-light" align="center">
+                            <tr align="center">
+                                <th>
+                                    File Name
+                                </th>
+                                <th>
+                                    Group
+                                </th>
+                                <th>
+                                    Sub-Group
+                                </th>
+                                <th>
+                                    Item
+                                </th>
+                                <th>
+                                    Path
+                                </th>
+                                <th>
+                                    CreatedOn
+                                </th>
+                                <th>
+                                    UpdatedOn
+                                </th>
+                                <th>
+                                    Action
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model)
+                            {
+                                <tr>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.PdfFileName)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Group.GroupName)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.SubGroup.SubGroupName)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Item.ItemName)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.PdfFileUrl)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.CreateON)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.UpdateON)
+                                    </td>
+                                    <td>
+                                        @*<a asp-action="Edit" asp-route-id="@item.PdfFileID" class="btn btn-inverse-info"><i class="fa fa-edit"></i></a> |*@
+                                        @*<a asp-action="Details" asp-route-id="@item.PdfFileID" class="btn btn-inverse-primary"><i class="fa fa-list"></i></a> |*@
+                                        <a asp-action="Delete" asp-route-id="@item.PdfFileID" class="btn btn-inverse-danger"><i class="fa fa-trash"></i></a> |
+                                        <a href="~/MyFiles/@item.PdfFileUrl" target="_blank" class="btn btn-inverse-secondary"><i class="fa fa-eye" aria-hidden="true"></i></a> |
+                                        @*<a asp-action="SendToTelegram" class="btn btn-inverse-success"><i class="fab fa-telegram"></i></a> |*@
+                                        <a href="#" onclick="Email(@item.PdfFileID)" class="btn btn-inverse-primary"><i class="fa fa-envelope" aria-hidden="true"></i></a>|
+                                        <a asp-action="Download" class="btn btn-inverse-info" asp-route-id="@item.PdfFileID"><i class="fa fa-download"></i></a>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Add new email</h5>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label class="control-label">Enter email to add in database</label>
+                    <input id="Email" class="form-control" placeholder="Enter email" name="Email" required type="email"/>&nbsp;&nbsp;
+                    <button onclick="AddEmail()" class="btn btn-inverse-success form-control">Add</button>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="myModal1" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel"></h5>
+                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body" id="myModalBodyDiv1">
+
+            </div>
+
+        </div>
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+        $('#FilePdfData').DataTable();
+    });
+    function GetOldEmail() {
+        debugger
+        $.ajax({
+            type: "GET",
+            url: "/PdfFiles/GetOldEmail",
+            contentType: "application/json; charset=utf-8",
+            datatype: "json",
+            success: function (data) {
+                $('#myModalBodyDiv1').html(data);
+                $('#myModal1').modal('show');
+            },
+            error: function () {
+                alert("Can't load modal.");
+            }
+        });
+    }
+    function Email(id) {
+        $.ajax({
+            type: "GET",
+            url: "/PdfFiles/SendPdfEmail",
+            data: { "id": id },
+            contentType: "application/json; charset=utf-8",
+            datatype: "json",
+            success: function (data) {
+                $("#exampleModalLabel").html("Send Email")
+                $('#myModalBodyDiv1').html(data);
+                $('#myModal1').modal('show');
+            },
+            error: function () {
+                alert("Can't load modal.");
+            }
+        });
+    }
+    function GetTelegramModal(id) {
+        debugger
+        $.ajax({
+            type: "GET",
+            url: "/PdfFiles/SendToTelegram",
+            data: { "id": id },
+            contentType: "application/json; charset=utf-8",
+            datatype: "json",
+            success: function (data) {
+                $("#exampleModalLabel").html("Send Message To Telegram")
+                $('#myModalBodyDiv1').html(data);
+                $('#myModal1').modal('show');
+            },
+            error: function () {
+                alert("Can't load modal.");
+            }
+        });
+    }
+    function AddEmail() {
+        var id = $("#Email").val();
+        if (id == null) {
+            swal("Please enter email!");
+        }
+        else {           
+            $.ajax({
+                type: "POST",
+                url: "/Home/UserEmail",
+                data: { "id": id },
+
+                success: function (data) {
+                    swal("Addes success");
+                    $("#Email").val("");
+                },
+                error: function (data) {
+                    swal("Can't able to add data.");
+                }
+            });
+        }
+
+    }
+</script>

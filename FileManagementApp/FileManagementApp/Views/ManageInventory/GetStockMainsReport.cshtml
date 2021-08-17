@@ -1,0 +1,270 @@
+﻿@model FileManagementApp.Models.ViewModels.StockMainVM
+@{
+    ViewData["Title"] = "Index";
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Table2</title>
+    <link rel="stylesheet" href="~/Report/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <script src="" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.3.1/jspdf.umd.min.js"></script>
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.22/pdfmake.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.4.1/html2canvas.min.js"></script>
+    <style>
+        .makeBorder{
+            border : 5px;
+        }
+    </style>
+</head>
+<body>
+    <section class="mt-3">
+        <div class="container">
+            <div class="row">
+               
+                <div class="col-md-12">
+                    <div class="text-center">
+                        <button name="submit" id="btnExport" class="btn btn-success">Get Report</button>
+                    </div>
+                    <table class="table table-bordered w-100 mt-3 makeBorder" id="report">
+                        <tr>
+                            <td colspan="12">Treatment of sundry</td>
+                        </tr>
+                        <tr>
+                            <td colspan="5">BOOK DEBT STATEMENT FOR THE MONTH OF</td>
+                            <td>@Model.Date.Month.ToString()</td>
+                            <td>@Model.Date.Year</td>
+                            <td colspan="3">ANNEXURE-2</td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td rowspan="2" colspan="2">NAME OF THE A/C</td>
+                            <td colspan="2">COMPANY NAME</td>
+                            <td colspan="3">M/S GLOBAL COTTSPINN </td>
+                            <td colspan="3">VALUE OF BOOK DEBTS ON </td>
+                            <td>DATE: </td>
+                            <td>@Model.Date.Date.ToString("dd/mm/yyyy")</td>
+                        </tr>
+                        <tr>
+                            <td>ADRESS</td>
+                            <td colspan="4">226/2/B, BODAD ROHANA</td>
+                            <td colspan="3"></td>
+                            <td></td>
+                            <td></td>
+
+                        </tr>
+                        <tr>
+                            <td colspan="8">Hypothecated to Bank Of Baroda ARVI Branch, by virtue of Book Debt Agreement executed on </td>
+                            <td colspan="1">By the company</td>
+                            <td colspan="3">M/S GLOBAL COTTSPINN</td>
+                        </tr>
+                        <tr>
+                            <td colspan="12">Terms of Sanction : Book Debts Upto 90 Days Only are to be taken as per sanction</td>
+                        </tr>
+                        <tr>
+                            <td>Sr.No</td>
+                            <td>Name of Party</td>
+                            <td>Address</td>
+                            <td>Gr.Amt incluiding</td>
+                            <td>Advance Received</td>
+                            <td>Net Amt</td>
+                            <td>of which less than 90 days</td>
+                            <td>on which more than 90 days</td>
+                            <td>total bill discounted</td>
+                            <td>eligible Book Debt</td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td>{a}</td>
+                            <td>{b}</td>
+                            <td>{c}</td>
+                            <td>{d}</td>
+                            <td>{e}</td>
+                            <td>{F}={d}-{e}</td>
+                            <td>{g}</td>
+                            <td>{h}</td>
+                            <td>{i}</td>
+                            <td>{j}={g}-{i}</td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td>Sundry Debtor</td>
+                            <td>All</td>
+                            <td>@Model.DebtorAmt</td>
+                            <td></td>
+                            <td>@Model.DebtorAmt</td>
+                            <td>@Model.DebtorAmt</td>
+                            <td></td>
+                            <td></td>
+                            <td>@Model.DebtorAmt</td>
+                            <td>Total</td>
+                            <td>@Model.DebtorAmt</td>
+                        </tr>
+                        <tr>
+                            <td colspan="12">
+                                We solemnly declare that the details of book-debts noted above and hypothecated to the bank are true and correct, are either our own property or the we have such an interest in the same as  entieties
+                                us to hypothicate the same with the bank to the full extent of the banks advances to us against these debts and they are not subject to any lien claim or charges of any sort & on the strength of this
+                                declaration of ours the advance has been taken.In order to verify of above statement, the bank is at liberty to get book debt verified at any time at our expences and we hereby agrees to accept as
+                                conclusive the proof of the rest of such valuation as certified by a duly authorised officer of the bank,We also for breach of trust in case any deliberate wrong reporting is down to us
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="7">We Certify that we have verified the list of debtors as on</td>
+                            <td>@Model.Date</td>
+                            <td colspan="4">& confirm correctness of statement</td>
+                        </tr>
+                        <tr>
+                            <td colspan="2">Branch Manager<br>signature<br>place</td>
+                            <td></td>
+                            <td colspan="2">Chartered Accountant<br>Signature<br>date</td>
+                            <td colspan="3"></td>
+                            <td colspan="3">For<br>Designation<br>Date</td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td colspan="12" class="text-center">Treatment of Sundry Creditors (Revised)</td>
+                        </tr>
+                        <tr>
+                            <td colspan="12" class="text-center">Computation of Drawing Power</td>
+                        </tr>
+                        <tr>
+                            <td colspan="2">Name of The Account</td>
+                            <td colspan="2"></td>
+                            <td colspan="2">Company Name</td>
+                            <td colspan="2"></td>
+                            <td colspan="2">M/S Global Cottspinn </td>
+                            <td colspan="2"></td>
+                        </tr>
+                        <tr>
+                            <td rowspan="2" colspan="6" class="text-center">Particulars</td>
+                            <td>Raw Material</td>
+                            <td>Stores,Spare,Etc</td>
+                            <td>Stock in Process</td>
+                            <td>Finished Goods</td>
+                            <td>Eligible Book Debt</td>
+                            <td>Total</td>
+                        </tr>
+                        <tr>
+                            <td>{1}</td>
+                            <td>{2}</td>
+                            <td>{3}</td>
+                            <td>{4}</td>
+                            <td>{5}</td>
+                            <td>{6}</td>
+                        </tr>
+                        <tr>
+                            <td>{1}</td>
+                            <td colspan="5">Value of stock / Book debts as per statement</td>
+                            <td>@Model.RawMaterial</td>
+                            <td>@Model.OtherInventory</td>
+                            <td>0</td>
+                            <td>@Model.FinishedGoods</td>
+                            <td>@Model.DebtorAmt</td>
+                            <td>@Model.TotalAmt</td>
+                        </tr>
+                        <tr>
+                            <td>{2}</td>
+                            <td colspan="5">Less : Sundry Creditors Inc. Stock under DAL/BG see note below</td>
+                            <td colspan="5"></td>
+                            <td>@Model.CreditorAmt</td>
+                        </tr>
+                        <tr>
+                            <td>{3}</td>
+                            <td colspan="5">value of stock / Book Debts {Net of Creditors} (1-2)</td>
+                            <td>@Model.RawMaterial</td>
+                            <td>@Model.OtherInventory</td>
+                            <td>0</td>
+                            <td colspan="2">@Model.FinishedGoods</td>
+                            <td>@Model.TotLesCredAmt</td>
+                        </tr>
+                        <tr>
+                            <td>{4}</td>
+                            <td colspan="5">Less : Stipulated Margin ( Calculated as % on 3)</td>
+                            <td>@Model.RawMaterial25</td>
+                            <td>@Model.OtherInventory25</td>
+                            <td>0</td>
+                            <td>@Model.FinishedGoods25</td>
+                            <td>@Model.Creditor30</td>
+                            <td>@Model.TotalAmt25</td>
+                        </tr>
+                        <tr>
+                            <td>{5}</td>
+                            <td colspan="11">Total Drawing Power ( 3- 4) :</td>
+                        </tr>
+                        <tr>
+                            <td>{6}</td>
+                            <td colspan="5">Drawing Power - BOB"s Share (…………………….%) :</td>
+                            <td>@Model.RawMaterial75</td>
+                            <td>@Model.OtherInventory75</td>
+                            <td>0</td>
+                            <td>@Model.FinishedGoods75</td>
+                            <td>@Model.Creditor70</td>
+                            <td>@Model.TotalAmt75</td>
+                        </tr>
+                        <tr>
+                            <td>{7}</td>
+                            <td colspan="5">Limit Sanctioned :</td>
+                            <td>75%</td>
+                            <td>75%</td>
+                            <td>75%</td>
+                            <td>75%</td>
+                            <td>70%</td>
+                            <td>27500000</td>
+                        </tr>
+                        <tr>
+                            <td>Note: </td>
+                            <td colspan="11">
+                                {a} Sundry Creditor is to be deducted from Raw Material at first instance. If sundry Creditor is in excess of value of raw material, the excess shall be adjusted against store, stock  in
+                                stock in progress finished goods proeressively.That is at first instance sundrt Creditors should be deducted from value of raw material up to the maximum value of raw material & any excess
+                                in sundry creditor  over value of raw material should be reduced next from stores & if there is further excess over value of stores spares next from stock in process , finished goods & so on.
+                                {b} However if Sundry Creditor for raw material & store spare etc. can be submitted by borrower & determined seperately, then at first instance deduct from the respective
+                                column of raw material {col,1}store , spare  etc {col.2} the value of sundry creditor of raw material & store spare etc. to the extent of value of individual stock. If sundry creditor in both of either
+                                {raw material & store , spare ,etc} is in excess of respective stock, the excess values { both or either} shall be adjusted against stock in process, Finished Goods & so on progressively.
+                                {c} SS denotes stock Statement & BDS denotes Book Debt Statement, Aadjacent alphabets/ numerals are item reference in the relevent statement.
+                                {d} Stipulated Margin (item4) to be as per sanction item
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2">VERIFIED<br>BRANCH MANAGER ARVI<br>DATE</td>
+                            <td colspan="5"></td>
+                            <td colspan="2">FOR<br>GLOBAL COTTSPINN<br>PARTNER</td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                    </table>
+                </div>
+               
+            </div>
+        </div>
+    </section>
+    <script type="text/javascript">
+        $("body").on("click", "#btnExport", function () {
+            html2canvas($('#report')[0], {
+                onrendered: function (canvas) {
+                    var data = canvas.toDataURL();
+                    var docDefinition = {
+                        content: [{
+                            image: data,
+                            width: 500
+                        }]
+                    };
+                    pdfMake.createPdf(docDefinition).download("Report.pdf");
+                }
+            });
+        });
+    </script>
+</body>
+</html>

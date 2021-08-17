@@ -1,0 +1,66 @@
+﻿@model IEnumerable<FileManagementApp.Models.Item>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_MasterLayout.cshtml";
+}
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-body">
+                <div class="table-responsive">
+                    <h3>Items</h3>
+                    <a asp-action="Create" class="btn btn-gradient-primary mr-2"><i class="fa fa-plus"></i> &nbsp;Add</a>
+                    <br />
+                    <br />
+                    <table class="table table-hover" id="Item">
+                        <thead class="thead-light" align="center">
+                            <tr>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.ItemName)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.Group)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.SubGroup)
+                                </th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model)
+                            {
+                                <tr align="center">
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.ItemName)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Group.GroupName)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.SubGroup.SubGroupName)
+                                    </td>
+                                    <td>
+                                        <a asp-action="Edit" asp-route-id="@item.ItemID" data-toggle="tooltip" title="Edit" class="btn btn-inverse-info"><i class="fa fa-edit" style="font-size:large"></i></a> &nbsp;&nbsp;
+                                        @*<a asp-action="Detail" asp-route-id="@item.ItemID" data-toggle="tooltip" title="Details" class="btn btn-inverse-success"><i class="fa fa-list" style="font-size:large"></i></a> &nbsp;&nbsp;*@
+                                        @*<a asp-action="DeleteConfirmed" asp-route-id="@item.ItemID" data-toggle="tooltip" title="Delete" class="btn btn-inverse-danger"><i class="fa fa-trash" style="font-size:large;color:red"></i></a>*@
+                                    
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+        $('#Item').DataTable();
+    });
+
+</script>
+

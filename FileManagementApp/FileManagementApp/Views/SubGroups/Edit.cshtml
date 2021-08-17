@@ -1,0 +1,38 @@
+﻿@model FileManagementApp.Models.SubGroup
+
+@{
+    ViewData["Title"] = "Edit";
+    Layout = "~/Views/Shared/_MasterLayout.cshtml";
+}
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-body">
+                <div class="table-responsive">
+                    <h3>Edit SubGroups</h3>
+                    <form asp-action="Edit" method="post">
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                        <input type="hidden" asp-for="SubGroupID" id="SubGroupID" name="SubGroupID" value="@Model.SubGroupID" />
+                        <div class="form-group">
+                            <label asp-for="SubGroupName" class="bmd-label-floating"></label>
+                            <input asp-for="SubGroupName" class="form-control" />
+                            <span asp-validation-for="SubGroupName" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            @*@Html.DropDownListFor(model => model.GroupID, new SelectList(ViewBag.GroupID, "GroupId", "GroupName"), "Select Group", new { @class = "form-control", @id = "Group" })*@
+                            <select asp-for="GroupID" class="form-control" asp-items="ViewBag.GroupID"></select>
+                        </div>
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-primary pull-right">Edit sub group</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

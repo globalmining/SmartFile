@@ -1,0 +1,30 @@
+﻿@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_MasterLayout.cshtml";
+}
+<div class="row">
+    <div class="col-sm-4">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Total Files</h5>
+                <a href="#" class="btn btn-info">@ViewBag.TotalFiles</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-4">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Total Items</h5>
+                <a href="#" class="btn btn-primary">@ViewBag.TotalItems</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-4">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Total Sub Groups</h5>
+                <a href="#" class="btn btn-success">@ViewBag.TotalSubGroups</a>
+            </div>
+        </div>
+    </div>
+</div>

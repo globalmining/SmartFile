@@ -1,0 +1,45 @@
+﻿@model FileManagementApp.Models.Item
+
+@{
+    ViewData["Title"] = "Edit";
+    Layout = "~/Views/Shared/_MasterLayout.cshtml";
+}
+
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-body">
+                <div class="table-responsive">
+                    <h3>Edit Items</h3>
+                    <form asp-action="Edit">
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                        <input type="hidden" asp-for="ItemID" />
+                        <div class="form-group">
+                            <label asp-for="ItemName" class="control-label"></label>
+                            <input asp-for="ItemName" class="form-control" />
+                            <span asp-validation-for="ItemName" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="GroupID" class="control-label"></label>
+                            <select asp-for="GroupID" class="form-control" asp-items="ViewBag.GroupID"></select>
+                            <span asp-validation-for="GroupID" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="SubGroupID" class="control-label"></label>
+                            <select asp-for="SubGroupID" class="form-control" asp-items="ViewBag.SubGroupID"></select>
+                            <span asp-validation-for="SubGroupID" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <input type="submit" value="Save" class="btn btn-primary" />
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
